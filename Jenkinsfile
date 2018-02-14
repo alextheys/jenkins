@@ -1,11 +1,10 @@
 #!groovy
 node {
 
-    def devAuthor = 'xx.xx.xxx.xx'
-    def uatAuthor = 'xx.xxx.xx.xxx'
+    def devAuthor = '127.0.0.1'
 
-    def group = 'xxx-packages'
-    def project = 'xxx-content'
+    def group = 'ctp.lottery'
+    def project = 'lottery-content'
 
     def runner = (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') ? true : false
 
@@ -26,7 +25,7 @@ node {
                 step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
                 throw err
             } finally {
-                step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'CenterParcs-UXP@adobe.com', sendToIndividuals: true])
+                step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'camelot@adobe.com', sendToIndividuals: true])
             }
         }
 
@@ -52,7 +51,7 @@ node {
         }
 
         // Deploy to Nexus
-        stage 'Deploy to Nexus'
+        stage 'Deploy to Artifactory'
         wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '6b1e6842-5799-4e8e-ac05-88f6bc69c4ce', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
             mvn '-s $MAVEN_SETTINGS clean deploy -B -Dconcurrency=1 -Dmaven.test.skip=true'
         }
@@ -79,10 +78,10 @@ node {
                 unstash 'target-site'
 		sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${devAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${v}.zip"
                 break
-            case "master":
-                unstash 'target-site'
-		sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${uatAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${v}.zip"
-                break
+        //    case "master":
+        //        unstash 'target-site'
+		//sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${uatAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${v}.zip"
+        //        break
             default:
                 break
         }
