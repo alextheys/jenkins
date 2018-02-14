@@ -18,7 +18,7 @@ node {
         echo "Building version ${project}-${v}"
         timeout(time: 10, unit: 'MINUTES') {
             try {
-                wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '6b1e6842-5799-4e8e-ac05-88f6bc69c4ce', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
+                wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
                     mvn '-s $MAVEN_SETTINGS clean verify -B -Dconcurrency=1'
                 }
             } catch (err) {
@@ -52,7 +52,7 @@ node {
 
         // Deploy to Nexus
         stage 'Deploy to Artifactory'
-        wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '6b1e6842-5799-4e8e-ac05-88f6bc69c4ce', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
+        wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
             mvn '-s $MAVEN_SETTINGS clean deploy -B -Dconcurrency=1 -Dmaven.test.skip=true'
         }
 
