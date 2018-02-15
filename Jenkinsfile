@@ -11,6 +11,29 @@ pipeline {
         		sh 'mvn --version'
         	}
         }
+        stage ('Build and test') {
+	        def devAuthor = '127.0.0.1'
+			def group = 'ctp.lottery'
+			def project = 'lottery-content'
+			def runner = (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') ? true : false
+
+			if (runner) {
+				echo "Building version ${project}-${v}"
+			}
+        	
+        }
+        
     }
+}
+
+
+def mvn(args) {
+    sh "${tool 'maven'}/bin/mvn ${args}"
+}
+
+@NonCPS
+def version(text) {
+    def matcher = text =~ '<version>(.+)</version>'
+    matcher ? matcher[0][1] : null
 }
 
