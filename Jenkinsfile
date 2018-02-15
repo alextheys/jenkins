@@ -11,13 +11,7 @@ node {
 
     if (runner) {
         // get latest from GIT
-        checkout([$class: 'GitSCM', 
-			branches: [[name: '*/{env.BRANCH_NAME}']], 
-			doGenerateSubmoduleConfigurations: false, 
-			extensions: [], 
-			submoduleCfg: [], 
-			userRemoteConfigs: [[]]
-		])
+        checkout scm
         def v = version(readFile('pom.xml'))
         // Build & Test
         stage 'Build & Test'
