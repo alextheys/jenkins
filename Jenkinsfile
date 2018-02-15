@@ -66,6 +66,7 @@ node {
                 unstash 'target-site'
                 sh 'ls -al'
                 sh 'ls -al ui.apps'
+                sh 'ls -al ui.apps/target'
                 sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
             //case "master":
