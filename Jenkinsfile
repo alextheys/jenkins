@@ -29,7 +29,7 @@ node {
                 }
             } catch (err) {
             	echo 'error occurred'
-                //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
+                step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
                 throw err
             } finally {
                 step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'camelot@adobe.com', sendToIndividuals: true])
@@ -41,7 +41,7 @@ node {
         echo 'archiving zip'
         step([$class: 'ArtifactArchiver', artifacts: '**/target/*.zip', fingerprint: true])
         stash includes: '**/target/*.zip', name: 'target-site'
-        //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
+        step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
 
         // Automation Test
         stage 'Automation Test'
