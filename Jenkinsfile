@@ -54,7 +54,7 @@ node {
         // Deploy on Author
         stage 'Deploy on Author'
         switch (env.BRANCH_NAME) {
-            case "develop":
+            case "master":
                 unstash 'target-site'
                 sh "curl -u admin:admin -F file=@\"ui.apps/target/${artifact}.ui.apps-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
