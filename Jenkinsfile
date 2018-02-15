@@ -68,7 +68,7 @@ node {
                 sh 'ls -al'
                 sh 'ls -al ui.apps'
                 sh 'ls -al ui.apps/target'
-                sh "curl -u Jenkins:Jenkins00# -F file=@\"ui.apps/target/${artifact}.ui.app-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
+                sh "curl -u admin:admin -F file=@\"ui.apps/target/pli.ui.apps-0.0.1-SNAPSHOT.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
             //case "master":
             //    unstash 'target-site'
