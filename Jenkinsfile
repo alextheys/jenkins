@@ -13,10 +13,7 @@ node {
         // get latest from GIT
         stage 'Get codebase from Git'
         checkout scm
-        
-        sh "git checkout ${env.BRANCH_NAME}"
-        
-        
+        sh "git checkout ${env.BRANCH_NAME}"        
         def v = version(readFile('pom.xml'))
         // Build & Test
         stage 'Build & Test'
@@ -59,7 +56,7 @@ node {
         // Deploy on Author
         stage 'Deploy on Author'
         switch (env.BRANCH_NAME) {
-            case "master":
+            case "develop":
                 unstash 'target-site'
                 sh "curl -u admin:admin -F file=@\"ui.apps/target/${artifact}.ui.apps-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
