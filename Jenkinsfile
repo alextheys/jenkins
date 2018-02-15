@@ -1,9 +1,7 @@
 #!groovy
 node {
-    //def devAuthor = '172.25.0.147'
-	def devAuthor = '127.0.0.1'
-
-    def group = 'ctp.lottery'
+    def devAuthor = '172.25.0.147'
+	def group = 'ctp.lottery'
     def project = 'lottery-content'
     def artifact = 'pli'
 
