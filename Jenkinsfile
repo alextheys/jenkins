@@ -17,6 +17,7 @@ node {
         timeout(time: 10, unit: 'MINUTES') {
             try {
             	mvn '--version'
+            	mvn 'help:effective-settings'
             	wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
                     echo "$MAVEN_SETTINGS"
                     mvn '-s $MAVEN_SETTINGS clean verify -B -Dconcurrency=1'
