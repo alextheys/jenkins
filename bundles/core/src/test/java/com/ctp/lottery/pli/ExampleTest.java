@@ -17,7 +17,7 @@ public class ExampleTest {
     public void testExample() {
         Example example = new Example();
         example.setExample("test");
-        System.out.println("in develop");
+        System.out.println("in master");
         assertThat(example.getExample(), is("test"));
     }
 }

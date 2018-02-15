@@ -11,7 +11,16 @@ node {
 
     if (runner) {
         // get latest from GIT
-        checkout scm
+        stage('Checkout') {
+			checkout([
+				$class: 'GitSCM',
+				branches: scm.branches,
+				doGenerateSubmoduleConfigurations: false
+			])
+			sh "git branch -u origin/env.BRANCH_NAME env.BRANCH_NAME"
+		}
+        
+        
         def v = version(readFile('pom.xml'))
         // Build & Test
         stage 'Build & Test'
