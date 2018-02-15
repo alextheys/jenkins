@@ -47,11 +47,11 @@ node {
         echo 'run Accessibility Checker'
 
         // Sonar report
-        stage('SonarQube analysis') {
-            withSonarQubeEnv('SonarQube') {
-                mvn 'sonar:sonar'
-            }
-        }
+        //stage('SonarQube analysis') {
+        //    withSonarQubeEnv('SonarQube') {
+        //        mvn 'sonar:sonar'
+        //    }
+        //}
 
         // Deploy to Nexus
         stage 'Deploy to Artifactory'
