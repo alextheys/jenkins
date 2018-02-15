@@ -64,7 +64,9 @@ node {
         switch (env.BRANCH_NAME) {
             case "master":
                 unstash 'target-site'
-                sh "curl -u Jenkins:Jenkins00# -F file=@\"ui.apps/target/${project}-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
+                sh 'ls -al'
+                sh 'ls -al ui.apps'
+                sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
             //case "master":
             //    unstash 'target-site'
