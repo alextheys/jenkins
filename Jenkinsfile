@@ -1,6 +1,6 @@
 #!groovy
 node {
-    def devAuthor = '127.0.0.1'
+    def devAuthor = '172.25.0.147'
 
     def group = 'ctp.lottery'
     def project = 'lottery-content'
@@ -17,15 +17,12 @@ node {
         echo "Building version ${project}-${v}"
         timeout(time: 10, unit: 'MINUTES') {
             try {
-            	mvn '--version'
-            	mvn 'help:effective-settings'
             	wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
-                    echo "$MAVEN_SETTINGS"
                     mvn '-s $MAVEN_SETTINGS clean verify -B -Dconcurrency=1'
                 }
             } catch (err) {
             	echo 'error occurred'
-                step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
+                //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
                 throw err
             } finally {
                 step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'camelot@adobe.com', sendToIndividuals: true])
@@ -47,13 +44,6 @@ node {
         stage 'Accessibility Checker'
         echo 'run Accessibility Checker'
 
-        // Sonar report
-        //stage('SonarQube analysis') {
-        //    withSonarQubeEnv('SonarQube') {
-        //        mvn 'sonar:sonar'
-        //    }
-        //}
-
         // Deploy to Nexus
         stage 'Deploy to Artifactory'
         wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
@@ -63,11 +53,8 @@ node {
         // Deploy on Author
         stage 'Deploy on Author'
         switch (env.BRANCH_NAME) {
-            case "master":
+            case "develop":
                 unstash 'target-site'
-                sh 'ls -al'
-                sh 'ls -al ui.apps'
-                sh 'ls -al ui.apps/target'
                 sh "curl -u admin:admin -F file=@\"ui.apps/target/${artifact}.ui.apps-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
             //case "master":
@@ -83,11 +70,11 @@ node {
         switch (env.BRANCH_NAME) {
             case "develop":
                 unstash 'target-site'
-		sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${devAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${v}.zip"
+				sh "curl -u admin:admin -X POST -d cmd=\"replicate\" http://${devAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${artifact}/${artifact}.ui.apps-${v}.zip"
                 break
         //    case "master":
         //        unstash 'target-site'
-		//sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${uatAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${v}.zip"
+		//sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${uatAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${artifact}/${project}-${v}.zip"
         //        break
             default:
                 break
