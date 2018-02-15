@@ -33,9 +33,10 @@ node {
 
         // Archive Artifact & JUnit results
         stage 'Archive Artifact & JUnit results'
+        echo 'archiving zip'
         step([$class: 'ArtifactArchiver', artifacts: '**/target/*.zip', fingerprint: true])
         stash includes: '**/target/*.zip', name: 'target-site'
-        step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
+        //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
 
         // Automation Test
         stage 'Automation Test'
@@ -61,14 +62,14 @@ node {
         // Deploy on Author
         stage 'Deploy on Author'
         switch (env.BRANCH_NAME) {
-            case "develop":
+            case "master":
                 unstash 'target-site'
                 sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
-            case "master":
-                unstash 'target-site'
-                sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${uatAuthor}:4502/crx/packmgr/service.jsp"
-                break
+            //case "master":
+            //    unstash 'target-site'
+            //    sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${uatAuthor}:4502/crx/packmgr/service.jsp"
+            //    break
             default:
                 break
         }
