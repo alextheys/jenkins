@@ -1,9 +1,9 @@
 #!groovy
 node {
     def devAuthor = '172.25.0.147'
-	def group = 'ctp.lottery'
+    def group = 'ctp.lottery'
     def project = 'lottery-content'
-    def artifact = 'pli'
+
 
     def runner = (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') ? true : false
 
@@ -11,18 +11,19 @@ node {
         // get latest from GIT
         stage 'Get codebase from Git'
         checkout scm
-        sh "git checkout ${env.BRANCH_NAME}"        
+        sh "git checkout ${env.BRANCH_NAME}"
         def v = version(readFile('pom.xml'))
+        def artifact = artifact(readFile('pom.xml'))
         // Build & Test
         stage 'Build & Test'
         echo "Building version ${project}-${v}"
         timeout(time: 10, unit: 'MINUTES') {
             try {
-            	wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
+                wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
                     mvn '-s $MAVEN_SETTINGS clean verify -B -Dconcurrency=1'
                 }
             } catch (err) {
-            	echo 'error occurred'
+                echo 'error occurred'
                 step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
                 throw err
             } finally {
@@ -58,10 +59,10 @@ node {
                 unstash 'target-site'
                 sh "curl -u admin:admin -F file=@\"ui.apps/target/${artifact}.ui.apps-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
-            //case "master":
-            //    unstash 'target-site'
-            //    sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${uatAuthor}:4502/crx/packmgr/service.jsp"
-            //    break
+        //case "master":
+        //    unstash 'target-site'
+        //    sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${uatAuthor}:4502/crx/packmgr/service.jsp"
+        //    break
             default:
                 break
         }
@@ -71,11 +72,11 @@ node {
         switch (env.BRANCH_NAME) {
             case "develop":
                 unstash 'target-site'
-				sh "curl -u admin:admin -X POST -d cmd=\"replicate\" http://${devAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${artifact}/${artifact}.ui.apps-${v}.zip"
+                sh "curl -u admin:admin -X POST -d cmd=\"replicate\" http://${devAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${artifact}/${artifact}.ui.apps-${v}.zip"
                 break
         //    case "master":
         //        unstash 'target-site'
-		//sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${uatAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${artifact}/${project}-${v}.zip"
+        //sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${uatAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${artifact}/${project}-${v}.zip"
         //        break
             default:
                 break
@@ -90,5 +91,11 @@ def mvn(args) {
 @NonCPS
 def version(text) {
     def matcher = text =~ '<version>(.+)</version>'
+    matcher ? matcher[0][1] : null
+}
+
+@NonCPS
+def artifact(text) {
+    def matcher = text =~ '<artifactId>(.+)</artifactId>'
     matcher ? matcher[0][1] : null
 }
