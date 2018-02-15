@@ -1,6 +1,7 @@
 #!groovy
 node {
-    def devAuthor = '172.25.0.147'
+    //def devAuthor = '172.25.0.147'
+	def devAuthor = '127.0.0.1'
 
     def group = 'ctp.lottery'
     def project = 'lottery-content'
@@ -10,7 +11,13 @@ node {
 
     if (runner) {
         // get latest from GIT
-        checkout scm
+        checkout([$class: 'GitSCM', 
+			branches: [[name: '*/{env.BRANCH_NAME}']], 
+			doGenerateSubmoduleConfigurations: false, 
+			extensions: [], 
+			submoduleCfg: [], 
+			userRemoteConfigs: [[]]
+		])
         def v = version(readFile('pom.xml'))
         // Build & Test
         stage 'Build & Test'
