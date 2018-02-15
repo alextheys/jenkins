@@ -1,6 +1,8 @@
 #!groovy
 node {
-
+	tools {
+        maven 'Maven 3.5.2'
+    }
     def devAuthor = '127.0.0.1'
 
     def group = 'ctp.lottery'
