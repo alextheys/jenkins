@@ -27,10 +27,6 @@ pipeline {
 }
 
 
-def mvn(args) {
-    sh "${tool 'maven'}/bin/mvn ${args}"
-}
-
 @NonCPS
 def version(text) {
     def matcher = text =~ '<version>(.+)</version>'
