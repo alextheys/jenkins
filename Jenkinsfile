@@ -22,6 +22,7 @@ node {
                     mvn '-s $MAVEN_SETTINGS clean verify -B -Dconcurrency=1'
                 }
             } catch (err) {
+            	echo 'error occurred'
                 step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/*.xml'])
                 throw err
             } finally {
