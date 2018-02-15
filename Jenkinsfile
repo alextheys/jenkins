@@ -90,7 +90,7 @@ node {
 }
 
 def mvn(args) {
-    sh "${tool 'Maven 3.5.2'}/bin/mvn ${args}"
+    sh "${tool 'maven-local'}/bin/mvn ${args}"
 }
 
 @NonCPS
