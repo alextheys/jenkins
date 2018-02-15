@@ -4,6 +4,7 @@ node {
 
     def group = 'ctp.lottery'
     def project = 'lottery-content'
+    def artifact = 'pli'
 
     def runner = (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') ? true : false
 
@@ -67,7 +68,7 @@ node {
                 sh 'ls -al'
                 sh 'ls -al ui.apps'
                 sh 'ls -al ui.apps/target'
-                sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${project}-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
+                sh "curl -u Jenkins:Jenkins00# -F file=@\"content/target/${artifact}-${v}.zip\" -F force=true -F install=true http://${devAuthor}:4502/crx/packmgr/service.jsp"
                 break
             //case "master":
             //    unstash 'target-site'
