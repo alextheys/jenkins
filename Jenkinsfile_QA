@@ -25,7 +25,7 @@ node {
              [$class      : 'VersionParameterDefinition',
               artifactid  : 'pli.ui.apps',
               description : '',
-              groupid     : '/libs-snapshot-local/ctp.lottery',
+              groupid     : 'ctp.lottery',
               propertyName: 'Version',
               repoid      : 'localhost8081']]
          ),
