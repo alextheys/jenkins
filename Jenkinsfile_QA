@@ -1,0 +1,60 @@
+#!groovy
+node {
+
+/*
+* Deploy on QA the latest snapshot from Nexus
+*/
+
+    def qaAuthor = 'xx.xx.xx.xx'
+
+    def group = 'xxx-packages'
+    def groupId = 'ctp.lottery'
+    def project = 'xxx-content'
+    def nexusPath = 'http://localhost:8081/libs-snapshot-local/'
+
+    properties(
+        [buildDiscarder(
+            logRotator(
+                artifactDaysToKeepStr: '7',
+                artifactNumToKeepStr: '7',
+                daysToKeepStr: '7',
+                numToKeepStr: '7'
+            )
+        ),
+         parameters([
+             [$class      : 'VersionParameterDefinition',
+              artifactid  : 'pli.ui.apps',
+              description : '',
+              groupid     : '/libs-snapshot-local/ctp.lottery',
+              propertyName: 'Version',
+              repoid      : 'localhost8081']]
+         ),
+         pipelineTriggers([])]
+    )
+
+    /*stage('Clean workspace') {
+        deleteDir()
+    }
+
+    stage('Dependency Get') {
+        mvn "dependency:get -DremoteRepositories=${nexusPath} -DgroupId=${groupId} -DartifactId=${project} -Dversion=${params.Version} -Dtransitive=false -Dpackaging=zip"
+        mvn "dependency:copy -Dartifact=${groupId}:${project}:${params.Version}:zip -DoutputDirectory=."
+    }
+
+    // Deploy on Author
+    stage('Deploy on Author') {
+        sh "curl -u Jenkins:Jenkins00# -F file=@\"${project}-${params.Version}.zip\" -F force=true -F install=true http://${qaAuthor}:4502/crx/packmgr/service.jsp"
+    }
+
+    // Replicate on Publish
+    stage('Replicate on Publish') {
+        sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${qaAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${params.Version}.zip"
+    }
+
+    slackSend(color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success (<${env.BUILD_URL}|Open>)")
+    */
+}
+
+def mvn(args) {
+    sh "${tool 'maven-local'}/bin/mvn ${args}"
+}
