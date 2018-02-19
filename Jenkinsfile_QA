@@ -11,7 +11,7 @@ node {
     def groupId = 'ctp.lottery'
     def project = 'xxx-content'
     def nexusPath = 'http://localhost:8081/libs-snapshot-local/'
-
+    mvn '--version'
     properties(
         [buildDiscarder(
             logRotator(
