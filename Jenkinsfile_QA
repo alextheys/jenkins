@@ -1,11 +1,31 @@
 #!groovy
-node {
+def findAMIs() {
+    return UUID.randomUUID().toString().split('-').join('\n')
+}
+
+node{
+    def userInput = input(
+            id: 'userInput', message: 'input parameters', parameters: [
+            [
+                    $class: 'ChoiceParameterDefinition',
+                    name: 'ami',
+                    choices: findAMIs(),
+                    description: 'AMI',
+            ],
+    ]
+    )
+
+    echo ("Selected AMI :: "+userInput)
+}
+
+
+//node {
 
 /*
 * Deploy on QA the latest snapshot from Nexus
 */
 
-    def qaAuthor = 'xx.xx.xx.xx'
+/*    def qaAuthor = 'xx.xx.xx.xx'
 
     def group = 'xxx-packages'
     def groupId = 'ctp.lottery'
@@ -32,7 +52,7 @@ node {
          pipelineTriggers([])]
     )
 
-    /*stage('Clean workspace') {
+    stage('Clean workspace') {
         deleteDir()
     }
 
@@ -52,9 +72,9 @@ node {
     }
 
     slackSend(color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success (<${env.BUILD_URL}|Open>)")
-    */
+
 }
 
 def mvn(args) {
     sh "${tool 'maven-local'}/bin/mvn ${args}"
-}
+}*/
