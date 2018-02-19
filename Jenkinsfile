@@ -46,11 +46,12 @@ node {
         stage 'Accessibility Checker'
         echo 'run Accessibility Checker'
 
-        // Deploy to Nexus
-        stage 'Deploy to Artifactory'
-        wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
-            mvn '-s $MAVEN_SETTINGS clean deploy -B -Dconcurrency=1 -Dmaven.test.skip=true -Dusername=admin -Dpassword=admin'
-        }
+        // Deploy to Artifactory
+        //Commented out as Camelot's artigfactory isn't there yet.
+        //stage 'Deploy to Artifactory'
+        //wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '3355ec39-5cd9-464f-ada8-1be44782dc63', replaceTokens: false, targetLocation: '', variable: 'MAVEN_SETTINGS']]]) {
+        //    mvn '-s $MAVEN_SETTINGS clean deploy -B -Dconcurrency=1 -Dmaven.test.skip=true -Dusername=admin -Dpassword=admin'
+        //}
 
         // Deploy on Author
         stage 'Deploy on Author'
