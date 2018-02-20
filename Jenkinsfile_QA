@@ -27,7 +27,7 @@ node {
               description : '',
               groupid     : 'ctp.lottery',
               propertyName: 'Version',
-              repoid      : 'central']]
+              repoid      : 'central2']]
          ),
          pipelineTriggers([])]
     )
