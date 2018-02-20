@@ -9,7 +9,7 @@ node {
 
     def group = 'xxx-packages'
     def groupId = 'ctp.lottery'
-    def project = 'pli.ui.apps'
+    def project = 'pli-aem.ui.apps'
     def nexusPath = 'http://localhost:8081/libs-snapshot-local/'
 
     properties(
@@ -23,7 +23,7 @@ node {
         ),
          parameters([
              [$class      : 'VersionParameterDefinition',
-              artifactid  : 'pli',
+              artifactid  : 'pli-aem',
               description : '',
               groupid     : 'ctp.lottery',
               propertyName: 'Version',

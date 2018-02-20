@@ -8,7 +8,7 @@
 
     <groupId>ctp.lottery</groupId>
     <artifactId>pli</artifactId>
-    <version>0.0.2-RELEASE</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Camelot Lottery PLI - Reactor Project</name>
@@ -32,17 +32,18 @@
         <publish.crx.password>admin</publish.crx.password>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <artifactory.url>http://localhost:8081/artifactory</artifactory.url>
     </properties>
     <distributionManagement>
         <repository>
             <id>central</id>
             <name>localhost8081-releases</name>
-            <url>http://localhost:8081/artifactory/libs-release-local</url>
+            <url>${artifactory.url}/libs-release-local</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>localhost8081-snapshots</name>
-            <url>http://localhost:8081/artifactory/libs-snapshot-local</url>
+            <url>${artifactory.url}/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -224,47 +225,6 @@
                 <groupId>com.day.jcr.vault</groupId>
                 <artifactId>content-package-maven-plugin</artifactId>
             </plugin>
-            <!--<plugin>
-                <groupId>org.jfrog.buildinfo</groupId>
-                <artifactId>artifactory-maven-plugin</artifactId>
-                <version>2.6.1</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>build-info</id>
-                        <goals>
-                            <goal>publish</goal>
-                        </goals>
-                        <configuration>
-                            <artifactory>
-                                <includeEnvVars>true</includeEnvVars>
-                                <envVarsExcludePatterns>*password*,*secret*,*key*,*token*,*passphrase*</envVarsExcludePatterns>
-                                <timeoutSec>60</timeoutSec>
-                            </artifactory>
-                            <publisher>
-                                <contextUrl>http://localhost:8081/artifactory</contextUrl>
-                                <username>${username}</username>
-                                <password>${password}</password>
-                                <excludePatterns>*-tests.jar</excludePatterns>
-                                <repoKey>libs-release-local</repoKey>
-                                <snapshotRepoKey>libs-snapshot-local</snapshotRepoKey>
-                            </publisher>
-                            <buildInfo>
-                                <buildName>plugin-pli</buildName>
-                                <buildNumber>${buildnumber}</buildNumber>
-                                <buildUrl>http://build-url.org</buildUrl>
-                            </buildInfo>
-                            <licenses>
-                                <autoDiscover>true</autoDiscover>
-                                <includePublishedArtifacts>false</includePublishedArtifacts>
-                                <runChecks>true</runChecks>
-                                <scopes>compile,runtime</scopes>
-                                <violationRecipients>build@organisation.com</violationRecipients>
-                            </licenses>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
         <pluginManagement>
             <plugins>
