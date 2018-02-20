@@ -23,11 +23,11 @@ node {
         ),
          parameters([
              [$class      : 'VersionParameterDefinition',
-              artifactid  : 'pli.ui.apps',
+              artifactid  : 'pli',
               description : '',
               groupid     : 'ctp.lottery',
               propertyName: 'Version',
-              repoid      : 'localhost8081']]
+              repoid      : 'central']]
          ),
          pipelineTriggers([])]
     )
