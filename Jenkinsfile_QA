@@ -9,9 +9,9 @@ node {
 
     def group = 'xxx-packages'
     def groupId = 'ctp.lottery'
-    def project = 'pli'
+    def project = 'pli.ui.apps'
     def nexusPath = 'http://localhost:8081/libs-snapshot-local/'
-    
+
     properties(
         [buildDiscarder(
             logRotator(
