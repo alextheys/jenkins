@@ -5,12 +5,12 @@ node {
 * Deploy on QA the latest snapshot from Nexus
 */
 
-    def qaAuthor = '127.0.0.1'
+    def qaAuthor = '172.25.0.117'
 
-    def group = 'xxx-packages'
+    def group = 'pli-aem'
     def groupId = 'ctp.lottery'
     def project = 'pli-aem.ui.apps'
-    def nexusPath = 'http://localhost:8081/libs-snapshot-local/'
+    def nexusPath = 'http://artifactory.camelot.global/artifactory/first-party/'
 
     properties(
         [buildDiscarder(
@@ -48,7 +48,7 @@ node {
 
     // Replicate on Publish
     stage('Replicate on Publish') {
-        //sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${qaAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${params.Version}.zip"
+        sh "curl -u Jenkins:Jenkins00# -X POST -d cmd=\"replicate\" http://${qaAuthor}:4502/crx/packmgr/service/script.html/etc/packages/${group}/${project}-${params.Version}.zip"
     }
 
     //slackSend(color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success (<${env.BUILD_URL}|Open>)")
